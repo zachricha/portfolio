@@ -2,22 +2,22 @@ const express = require('express');
 const bodyParser = require('body-parser');
 const nodemailer = require('nodemailer');
 const ejs = require('ejs');
-
 const app = express();
 
 const port = process.env.PORT || 3000;
+
 app.set('view engine', 'ejs');
 
 app.use('/public', express.static('public'));
-
 app.use(bodyParser.urlencoded({
   extended: false,
 }));
-app.use(bodyParser.json());
+
+let emailSuccess = null;
 
 app.get('/', (req, res) => {
   res.render('index', {
-    emailSuccess: undefined,
+    emailSuccess,
   });
 });
 
@@ -45,8 +45,8 @@ app.post('/send', (req, res) => {
   });
 
   let mailOptions = {
-    from: '"Portfolio Contact" <portfolio@zachrichards.com>',
-    to: 'zrricha1@gmail.com',
+    from: `"Portfolio Contact" <${req.body.email}>`,
+    to: 'zacharyrrichards@gmail.com',
     subject: 'Portfolio Contact Request',
     text: '',
     html: emailOutput,
@@ -54,19 +54,14 @@ app.post('/send', (req, res) => {
 
   transporter.sendMail(mailOptions, (error, info) => {
     if (error) {
-      res.render('index', {
-        emailSuccess: false,
-      });
-      return;
-    }
-
-    res.render('index', {
-      emailSuccess: true,
-    });
-
+      emailSuccess = false;
+      return res.redirect('/');
+    };
+    emailSuccess = true;
+    return res.redirect('/')
   });
 });
 
 app.listen(port, () => {
-  console.log('server started on port 3000');
+  console.log(`Server starting on port ${port}`);
 });
