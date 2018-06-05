@@ -1,3 +1,4 @@
+require('dotenv').load();
 const express = require('express');
 const bodyParser = require('body-parser');
 const nodemailer = require('nodemailer');
@@ -19,6 +20,7 @@ app.get('/', (req, res) => {
   res.render('index', {
     emailSuccess,
   });
+  emailSuccess = null;
 });
 
 app.post('/send', (req, res) => {
@@ -35,18 +37,18 @@ app.post('/send', (req, res) => {
   `;
 
   let transporter = nodemailer.createTransport({
-    host: 'mail.smtp2go.com',
-    port: 2525,
+    host: process.env.MAIL_HOST,
+    port: process.env.MAIL_PORT,
     secure: false,
     auth: {
-      user: 'zrricha1@gmail.com',
-      pass: 'VNpa9qSunCGr',
+      user: process.env.MAIL_EMAIL,
+      pass: process.env.MAIL_PASSWORD,
     },
   });
 
   let mailOptions = {
     from: `"Portfolio Contact" <${req.body.email}>`,
-    to: 'zacharyrrichards@gmail.com',
+    to: process.env.EMAIL,
     subject: 'Portfolio Contact Request',
     text: '',
     html: emailOutput,
