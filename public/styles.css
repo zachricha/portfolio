@@ -75,7 +75,7 @@ nav {
 #about {
   padding-top: 50px;
   padding-left: 20px;
-  height: 175px;
+  height: 200px;
   color: white;
   background-color: #9E9E9E;
   box-shadow: 2px 0px 3px 0px rgba(0, 0, 0, 0.4), -2px 0px 3px 0px rgba(0, 0, 0, 0.4);
@@ -215,6 +215,9 @@ input {
   }
 }
 @media screen and (max-width: 576px) {
+  #about {
+    height: 570px;
+  }
   .form-group textarea {
     width: 96%;
   }
